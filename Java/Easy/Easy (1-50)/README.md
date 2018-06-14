@@ -2739,9 +2739,67 @@ For example:
 
 - My Answer
 
-这一题暂时不会做，求大神解答！
 
-大概已有思路知道是用“除n取余法”，把这个当成生成26进制的数的字符表示问题来做，但是在边界地方的表示总会弄错，暂时想不通。
+```
+package easy1;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Tom Qian
+ * @email tomqianmaple@outlook.com
+ * @github https://github.com/bluemapleman
+ * @date 2018年1月23日
+ */
+public class ExcelSheetColumnTitle
+{
+    public static String convertToTitle(int n) {
+        String result="";
+        List<Integer> list=new ArrayList<Integer>();
+        while(n/26!=0) {
+            list.add(n%26);
+            n/=26;
+        }
+        
+        list.add(n%26);
+        
+        
+        System.out.println(list.size());
+        for(Integer ele:list)
+            System.out.print(ele+" ");
+        for(int i=0;i<list.size();i++) {
+            int ele=list.get(list.size()-i-1);
+            result+=(char)(ele+'@');
+        }
+        
+        while(result.contains("@")) {
+            int index=result.indexOf("@");
+            result=result.substring(0, index-1)+(char)(result.charAt(index-1)-1)+"Z"+result.substring(index+1);
+            if(result.startsWith("@"))
+                result=result.substring(1);
+        }
+        
+        result=result.replace("@","");
+        
+        return result;
+        
+    }
+}
+
+
+//for(int i=0;i<list.size();i++) {
+//  int ele=list.get(list.size()-i-1);
+//  if(i<list.size()-1) {
+//      if(ele==1)
+//          result+="A";
+//      else if(ele!=0)
+//          result+=(char)(ele+'@');
+//  }else if(ele!=0)
+//      result+=(char)(ele+'@');
+//}
+
+```
 
 
 # Majority Element
