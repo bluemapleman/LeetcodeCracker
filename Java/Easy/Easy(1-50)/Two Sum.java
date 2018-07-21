@@ -18,23 +18,41 @@ return [0, 1].
 
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        int firstIndex=-1,secondIndex=-1;
-        
-        for(int i=0;i<nums.length;i++){
-            int firstEle=nums[i];
-            for(int j=i+1;j<nums.length;j++){
-                int secondEle=nums[j];
-                if(firstEle+secondEle==target){
-                    firstIndex=i;
-                    secondIndex=j;
+        vector<int> ans;
+        int index1=-1,index2=-1;
+        for(int i=0;i<nums.size();i++)
+            for(int j=i+1;j<nums.size();j++){
+                if(nums[i]+nums[j]==target){
+                    index1=i;
+                    index2=j;
+                    break;
                 }
             }
         }
-        
-        int []arr=new int[2];
-        arr[0]=firstIndex;
-        arr[1]=secondIndex;
-        return arr;
-    }
+
+        if(!(index1==-1 || index2==-1)){
+            ans.push_back(index1);
+            ans.push_back(index2);
+        }
+
+        return ans;
 }
 
+// if the vector<int>  is sorted, you can do it in this way.
+// int firstIndex=-1,secondIndex=-1;
+        
+        // for(int i=0;i<nums.length;i++){
+        //     int firstEle=nums[i];
+        //     for(int j=i+1;j<nums.length;j++){
+        //         int secondEle=nums[j];
+        //         if(firstEle+secondEle==target){
+        //             firstIndex=i;
+        //             secondIndex=j;
+        //         }
+        //     }
+        // }
+        
+        // int []arr=new int[2];
+        // arr[0]=firstIndex;
+        // arr[1]=secondIndex;
+        // return arr;
