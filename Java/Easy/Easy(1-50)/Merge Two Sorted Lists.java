@@ -35,19 +35,7 @@ package easy;
 public class MergeTwoSortedLists
 {
 
-    public static void main(String[] args)
-    {
-        ListNode node1=new ListNode(1),node2=new ListNode(2),node3=new ListNode(4);
-        node1.next=node2;node2.next=node3;
-        ListNode node4=new ListNode(1),node5=new ListNode(3),node6=new ListNode(4);
-        node4.next=node5;node5.next=node6;
-        ListNode head=mergeTwoLists(node1, node4);
-        while(head!=null) {
-            System.out.println(head.val);
-            head=head.next;
-        }
-    }
-    
+    // O(m+n)
     public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         if(l1==null) {
             return l2;
@@ -79,19 +67,15 @@ public class MergeTwoSortedLists
             }
         }
         
-        if(l1!=null) {
-            while(l1!=null) {
-                temp.next=l1;
-                l1=l1.next;
-                temp=temp.next;
-            }
+        while(l1!=null) {
+            temp.next=l1;
+            l1=l1.next;
+            temp=temp.next;
         }
-        else {
-            while(l2!=null) {
-                temp.next=l2;
-                l2=l2.next;
-                temp=temp.next;
-            }
+        while(l2!=null) {
+            temp.next=l2;
+            l2=l2.next;
+            temp=temp.next;
         }
         
         return head;

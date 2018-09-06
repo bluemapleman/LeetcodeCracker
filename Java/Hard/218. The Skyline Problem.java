@@ -19,7 +19,96 @@ There must be no consecutive horizontal lines of equal height in the output skyl
 */
 
 class Solution {
-    public List<int[]> getSkyline(int[][] buildings) {
-        
+    // O(n^2)
+	public List<int[]> getSkyline(int[][] buildings) {
+		List<int[]> ans=new ArrayList<>();
+		List<List<int[]>> overlappingBuilding=new ArrayList<>();
+		
+		if(buildings.length==0)
+			return ans;
+		
+		int lastY=buildings[0][1];
+		List<int[]> tempList=new ArrayList<>();
+		tempList.add(buildings[0]);
+		
+		// divide and conquer
+		for(int i=1;i<buildings.length;i++) {
+			// two buildings' contour are connected or overlapped
+			if(lastY>=buildings[i][0]) {
+				tempList.add(buildings[i]);
+			}else {
+				overlappingBuilding.add(tempList);
+				tempList=new ArrayList<>();
+				tempList.add(buildings[i]);
+			}
+			lastY=Math.max(lastY, buildings[i][1]);
+		}
+		overlappingBuilding.add(tempList);
+		
+		
+		for(List<int[]> building:overlappingBuilding) {
+			for(int[] temp:getSkylineForOverlappingBuilding(building))
+				ans.add(temp);
+		}
+		
+		return ans;
     }
+	
+	public List<int[]> getSkylineForOverlappingBuilding(List<int[]> buildings){
+		List<int[]> ans=new ArrayList<>();
+		
+		Map<Integer,List<int[]>> heightLineMap=new TreeMap<>(new Comparator<Integer>()
+		{
+			@Override
+			public int compare(Integer o1, Integer o2)
+			{
+				return o2-o1;
+			}
+		});
+		Set<Integer> buildingContourPointSet=new TreeSet<>(); 
+		// store all intervals that belong to different height
+		for(int i=0;i<buildings.size();i++) {
+			int[] building=buildings.get(i);
+			buildingContourPointSet.add(building[0]);
+			buildingContourPointSet.add(building[1]);
+			int height=building[2];
+			if(!heightLineMap.containsKey(height))
+				heightLineMap.put(height, new ArrayList<>());
+			
+			heightLineMap.get(height).add(new int[] {building[0],building[1]});
+			
+		}
+		
+		// for each end point of segment, find the greatest height that is not at the end of the interval
+		List<int[]> xhList=new ArrayList<>();
+		for(Integer x:buildingContourPointSet) {
+			int h=0;
+			for(Integer height:heightLineMap.keySet()) {
+				boolean findFlag=false;
+				List<int[]> xyList=heightLineMap.get(height);
+				for(int[] xy:xyList) {
+					// the highest point is not the end point of segment
+					if(xy[0]<=x && xy[1]>x) {
+						h=Math.max(h, height);
+						findFlag=true;
+						break;
+					}
+				}
+				if(findFlag)
+					break;
+			}
+			xhList.add(new int[] {x,h});
+		}
+
+		int tempH=0;
+		for(int i=0;i<xhList.size();i++) {
+			int h=xhList.get(i)[1];
+			if(tempH!=h) {
+				ans.add(new int[] {xhList.get(i)[0],h});
+				tempH=h;
+			}
+		}
+		
+		return ans;
+	}
 }

@@ -19,14 +19,10 @@ package easy;
  */
 public class ValidParentheses
 {   
-    public static void main(String[] args)
-    {
-        System.out.println(isValid("[}[[(){}]][{([])}]{[([()])]}"));
-
-    }
     
-    //remove "()","{}","[]" gradually, if anything left, then it must be not valid +_+!
-    public static boolean isValid(String s) {
+    // keep removing pairs of parenthesis until there is no one to be removed
+    // O(n^2)
+    public static boolean isValid1(String s) {
         if(s.length()==0)
           return true;
         if(s.length()%2!=0)
@@ -49,6 +45,24 @@ public class ValidParentheses
                 return false;
         
         return true;
+    }
+    
+    // According to features of order that pair of parenthesis appears.
+    // time: O(n)
+    // space: O(n)
+    public static boolean isValid2(String s) {
+        Stack<Character> stack = new Stack<Character>();
+        for (char c : s.toCharArray()) {
+            if (c == '(')
+                stack.push(')');
+            else if (c == '{')
+                stack.push('}');
+            else if (c == '[')
+                stack.push(']');
+            else if (stack.isEmpty() || stack.pop() != c)
+                return false;
+        }
+        return stack.isEmpty();
     }
 }
 

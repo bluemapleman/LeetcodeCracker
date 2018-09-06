@@ -23,30 +23,26 @@ package medium1;
 public class RemoveNthNodeFromEndofList
 {
     // Let a node be forward node, and assign a follow node to keep n node distance from forward node
-    // Then when forward node get to the tail, the node next to the follow node is the node to be removed
-    public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode forwardNode=head,followNode=head;
-        
-        int count=0;
-        //1 2 3 4 5
-        while(forwardNode.next!=null) {
-            if(++count>n) {
-                followNode=followNode.next;
-            }
-                
-            forwardNode=forwardNode.next;
+    // Then when forward node get to the tail, the node next to the follow node is the node to be remove
+    // One-pass: time O(n)
+    // space: O(1)
+    public ListNode removeNthFromEnd2(ListNode head, int n) {
+        ListNode forward=head,follow=head;
+        int i=1;
+        while(i++<=n) {
+            forward=forward.next;
         }
-        
-        // if removeNode is the head node, then special treat
-        if(n>count) {
+        // edge case:if removeNode is the head node, then special treat
+        if(forward==null) {
             head=head.next;
+        }else {
+            while(forward.next!=null) {
+                forward=forward.next;
+                follow=follow.next;
+            }
+            follow.next=follow.next.next;
         }
-        else {
-            ListNode removeNode=followNode.next;
-            followNode.next=removeNode.next;
-            removeNode.next=null;
-        }
-        
+            
         return head;
     }
 }
